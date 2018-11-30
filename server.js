@@ -10,6 +10,7 @@ const port = 3000;
 const cors = corsMiddleware({
     origins: ['*'],
 });
+var dbService = require('./common/dataService');
 
 server.use(restify.plugins.bodyParser());
 server.pre(cors.preflight);
@@ -26,11 +27,23 @@ io.on('connection', socket => {
 });
 
 server.get('/', (req, res) => {
-    res.json({ status: 'Server runing ' });
+    let sql = "select qtag as Q,orders.order_id, food_name, quantity, orders.created_at,done  from order_trackings , foods , order_details , orders where foods.id = order_details.food_id and  order_details.order_id = order_trackings.order_id and orders.order_id = order_details. order_id";
+    dbService.queryExec(sql, (err, result) => {
+        if (!err) {
+            res.json({ status: result });
+        } else {
+            res.json({ status: 'DB Error' });
+        }
+    });
+
 });
 
 server.post('/apis/order', (req, res) => {
+
     const order = req.body;
+    let sql = "select qtag as Q,orders.order_id, food_name, quantity, orders.created_at,done  from order_trackings , foods , order_details , orders where foods.id = order_details.food_id and  order_details.order_id = order_trackings.order_id and orders.order_id = order_details. order_id";
+
+
     orders.push(order);
 
     for (const socket of sockets) {

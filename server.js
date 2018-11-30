@@ -41,9 +41,3 @@ server.post('/apis/order', (req, res) => {
 });
 
 server.listen(port, () => console.info('Server started'));
-
-
-
-
-
-

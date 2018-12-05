@@ -53,4 +53,4 @@ server.post('/apis/order', (req, res) => {
     res.json(order);
 });
 
-server.listen(port, () => console.info('Server started'));
+server.listen(port, () => console.info('Server started on port : ' + port));
